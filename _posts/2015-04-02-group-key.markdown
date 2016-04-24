@@ -1,0 +1,32 @@
+---
+layout:     post
+title:      Group Key介绍
+date:       2015-04-02 21:20:00
+author:     "lemon"
+categories: 系统
+---
+
+列式数据库是面向OLAP场景的，所谓OLAP，更多是用来进行数据分析时使用，比如应用于数据仓库系统，列式数据库中的数据按列存储的话，并能够很好地分析一列数据的特性。本文将介绍一下一种内存列式数据库的索引方案，名字叫做GroupKey。主要是用来进行数据的索引工作。
+
+## Group Key的查找
+
+![groupkeyindex](/images/groupkey/1.png)
+
+从左往右看，最左边的0,1,2,3等就是行号，要查第三行的内容，取出来是2，2表示改行内容在字典中的偏移量，字典就是左边的Main Dictionary结构，偏移量2对应的就是delta，表示第三行的内容就是delta，好了，这样便实现了根据行号查找内容的功能。groupkey的另一个功能，就是根据字典查找行号，这就需要借助两个辅助数组进行查找，途中就是I和P数组，I表示字典中的内容的重复次数，比如charlie，对应于I中的1，然后取出I中下一行的内容3，重复次数就是3-1=2次，那它们对应的行号就是P中下标从1到2（1<=小标<3)，取出来数值是5,6，就表示是第五行和第六行。
+
+## Group Key的插入流程
+
+往数据库中插入数据时，也要改变Group Key的数据结构，下面第一张图就是如何改变最左边的行号对应的内容，第二张图就是修改字典，辅助索引的流程。
+
+![row](/images/groupkey/2.png)
+![index](/images/groupkey/3.png)
+
+看不懂插入流程，没有关系，看以通过看算法实现，如下：
+
+![algorithm](/images/groupkey/4.png)
+
+算法的复杂度是O(n)，需要便利行号对应的数组和插入的数据（B树结构）两个数组。X向量是一个辅助向量，用来标记新数据的加入对辅助索引的影响。通过看图就可以明白。
+
+## 总结
+
+group key索引比较简单，感兴趣的话可以查看论文《Fast Lookups for In-Memory Column Stores: Group-Key Indices, Lookup and Maintenance》和我的[工程实现](https://github.com/lemon0910/groupkey)。

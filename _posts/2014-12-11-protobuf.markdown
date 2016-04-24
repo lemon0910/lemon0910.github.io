@@ -1,0 +1,73 @@
+---
+layout:     post
+title:      protobuf的使用
+date:       2014-12-11 12:10:00
+author:     "lemon"
+categories: 编程
+---
+
+Protocol Buffers 是一种轻便高效的结构化数据存储格式，可以用于结构化数据串行化，或者说序列化。它很适合做数据存储或 RPC 数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。目前提供了 C++、Java、Python 三种语言的 API。其优点是语言中立，平台中立，可扩展性好，目前在google内部大量用于数据存储，通讯协议等方面。Protocol Buffers在功能上类似XML，但是序列化后的数据更小，解析更快，使用上更简单。用户只要按照proto语法在.proto文件中定义好数据的结构，就可以使用PB提供的工具（protoc）自动生成处理数据的代码，使用这些代码就能在程序中方便的通过各种数据流读写数据。具体请参考[官网](https://github.com/google/protobuf)。
+
+## protobuf的使用
+
+protobuf对结构化数据进行了处理，并提供了相关的操作方法，这样，我们便可以方便的进行结构化数据的传输和操作，而无需编写相关的序列化，反序列化和各种操作方法。笔者曾经编写过一个网络程序，结构化数据特别的多，全部自己进行操作处理，现在了解了protobuf，才知道自己当初白花了很多力气。
+
+## protobuf基础介绍
+
+由于笔者只擅长protobuf提供的C++的API，所以后面的介绍都是基于C++的，读者可参考[这里](https://developers.google.com/protocol-buffers/docs/cpptutorial)。protobuf的基本格式如下:
+
+    package lemon;
+	message Person{
+		required string name = 1;
+		optional string email = 2;
+		repeated string phonenumber = 3;
+	}
+
+package lemon类似于C++中的命名空间，防止重名，如果加了的话后面使用该文件下面的消息必须加上前缀lemon，比如lemon::Person。后面的Person就是结构化数据，要看懂message Person首先要知道required、optional和repeated字段的意思。required表示name必须存在且只存在一份。optional表示email可以不存在或者存在一份，repeated表示phonenumber存在0份或多份。所以，这个和C/C++结构体的不同之处就是存在了份数的概念。这里面的1，2，3就是name，email的出现顺序，必须是递增的。最后要说明的一点就是message里面可以嵌套message，例子如下：
+
+    message Person{
+		required string name = 1;
+		optional string email = 2;
+		message Child
+		{
+			required string name = 1;
+		}
+		optional Child children = 3;
+		repeated string phonenumber = 4;
+	}
+
+好了，说了编写以后就可以编译了，假设文件名为person.proto，命令如下：
+	protoc -I=. --cpp_out=. ./person.proto
+执行完命令以后就会生成person.pb.h和person.pb.cc两个文件，里面有生成的message对应的类成员和方法，如果不记得可以查看person.pb.h，寻找对应的关键字name,email和phonenumber。
+name的方法如下：
+![name](/images/protobuf/1.png)
+最常用的就是name和set_name方法，一个是获取名字，另一个是设置名字。
+email的方法如下：
+![email](/images/protobuf/2.png)
+phonenumber的方法如下：
+![phonenumber](/images/protobuf/3.png)
+这里的话需要注意要获取phonenumber的话要先获得它的大小，通过方法phonenumber_size获得，访问的话要通过下标，使用方法phonenumber(int index)，设置的话用方法add_phonenumber。
+
+## 例子介绍
+
+下面看一个使用例子：
+
+    #include "person.pb.h"
+	#include <iostream>
+	#include <string>
+
+	using namespace std;
+
+	int main()
+	{
+		lemon::Person p;
+		p.set_name("lemon");
+		cout << p.name() << endl;
+		p.set_email("lemon_wonder@163.com");
+		p.add_phonenumber("13856888888");
+		p.add_phonenumber("13856688888");
+
+		for(unsigned int i = p.phonenumber_size(); i++)
+			cout << p.phonenumber(i);
+
+	}

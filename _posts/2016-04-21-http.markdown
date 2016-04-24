@@ -1,0 +1,89 @@
+---
+layout:     post
+title:      快速理解HTTP协议
+date:       2016-04-21 14:24:00
+author:     "lemon"
+categories: 编程
+---
+
+HTTP是非常重要的网络协议，在实际工作中很多时候都需要学习和理解HTTP协议。比如为系统设计HTTP服务器，处理客户端的HTTP协议请求，模拟客户端发送HTTP请求等等。因此，这里将简单介绍一下HTTP的相关知识。
+
+## HTTP请求报文
+
+HTTP请求报文主要由客户端发出，客户端可以是浏览器，编写的客户端程序等。客户端主动发送请求报文请求服务。
+
+![request](/images/HTTP/1.png)
+
+请求报文包含报文首部和报文主体两个部分，它们之间用空行(CR+LF)隔开。报文主体为发送的具体消息，报文首部比较复杂，也很重要，理解报文首部才能够更好地理解HTTP协议。我们看一个具体的例子：
+
+![request-example](/images/HTTP/2.png)
+
+首先是方法，比较重要的几个为GET，POST，PUT等几个方法。具体可以参考下图。
+
+![command](/images/HTTP/3.png)
+
+方法后的下一个字段是URI，即资源的位置，如我们使用浏览器时经常访问的位置、，它将返回服务器目录中/index.html文件中的内容。紧接着就是协议的版本。这三个部分组成一行，后面内容变为首部字段，如Host表示域名等等，具体使用时可以再进行查找。如果为POST何PUT方法，头部后面会包含用户发送的数据，放在报文主体部分，如上面的例子包含了客户端发送给服务器的一些用户信息。
+
+## HTTP响应报文
+
+HTTP响应报文由服务端返回给客户端，用来响应客户端的请求。同样，响应报文也包含了报文首部和报文主体两个部分。
+
+![response](/images/HTTP/4.png)
+
+区别于请求报文，响应报文主要是对请求报文的一些回应信息。比较重要的也是头部信息。
+
+![response-example](/images/HTTP/5.png)
+
+其中我们见到最多的是状态码字段，它包含了服务器对结果的响应信息，详细说明如下：
+
+![statuscode](/images/HTTP/6.png)
+
+报文主体部分就是服务器相应的内容，如html文件等等。
+
+## 服务端编程实现
+
+对于服务端编程实现，主要包含6个步骤：
+
+1. 等待客户端连接服务器和发送HTTP请求。
+2. 解析HTTP请求。
+3. 弄清客户端的请求内容。
+4. 产生响应数据数据。
+5. 将响应数据格式化为HTML文件。
+6. 返回请求。
+
+其中，1，2，6步对于每个服务端来说都是一样的，可以使用第三方库进行处理。3，4，5部分需要进行相关的业务处理。下面以python的库为例，说明相关实现。
+
+    import BaseHTTPServer
+
+    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+        '''Handle HTTP requests by returning a fixed 'page'.'''
+
+        # Page to send back.
+        Page = '''\
+    <html>
+    <body>
+    <p>Hello, web!</p>
+    </body>
+    </html>
+    '''
+
+    # Handle a GET request.
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html")
+        self.send_header("Content-Length", str(len(self.Page)))
+        self.end_headers()
+        self.wfile.write(self.Page)
+
+    #----------------------------------------------------------------------
+
+    if __name__ == '__main__':
+        serverAddress = ('', 8080)
+        server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+        server.serve_forever()
+
+上面实现了一个简单的HTTP服务器，客户端访问的话将返回Hello, web!
+
+## 其它
+
+HTTP是一个非常复杂的协议，但上面部分是使用最广泛的。除了上面的相关知识，HTTP还有很多相关知识，如cookie技术，HTTPS协议，安全问题等等。再次不做一一介绍，感兴趣的话可以查看相关知识。

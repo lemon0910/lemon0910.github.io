@@ -1,0 +1,122 @@
+---
+layout:     post
+title:      C++学习和C++11的新特性
+date:       2015-02-27 16:56:00
+author:     "lemon"
+categories: 编程
+---
+
+对于C++的学习，我觉得有几个阶段，首先，明白C++的基本语法，通过看C++ Primer就可以知道，并做很多的练习，让自己熟悉C++的基本语法使用，了解基本的语句，如控制语句，循环语句等等，这一部分，主要是C部分的学习。在此基础上，使用C++的面向对象，使用类编写程序，可以尝试编写一个简单的String类，明白类的特性，比如说继承，组合，友元等等。继续前进，学习使用STL库，能够使用顺序容器，关联容器，迭代器，STL提供的算法。剩下的一块就是模板的学习了。看书，多练习，才能学好C++。第二，明白C++的一些原理，比如说STL库的实现，C++程序的内存布局等。这一部分能够让你掌握程序的运行，从而不惧怕出现问题。最后，也是最难的，就是对C++的设计的思考，能够从语言设计者的角度思考问题。
+
+## boost库
+
+C++11中的很多新特性在boost库中可以找到影子，比如说智能指针，function和bind等等。boost库中有很多的宝藏，学习boost会对你有很大的帮助，boost的有些设计简单明了，非常的适合学习，学好boost，有利于你很好的掌握C++的特性，并利用这个利器进行高效的软件开发。
+
+## C++11部分新特性介绍
+
+#### for语句的变化
+
+for语句是C++中经常使用到的语句，这里介绍一下，希望大家能尽早的熟悉。
+
+	string s("hello world");
+
+	for(char &c : s)
+		c = toupper(c);
+
+	cout << s << endl;
+
+这里，c依次被赋予s中的每个元素，因为是引用类型，所以s中的值都会被改成大写，s被改变成"HELLO WORLD"。
+
+#### 使用decltype简化返回类型定义
+
+decltype是一个操作符，用来获得括号内表达式的类型。规则如下：
+1. 如果表达式是一个变量，那么就是这个变量的类型。
+2. 如果表达式是一个函数，那么就是这个函数返回值的类型。
+3. 如果不符合1和2，如果表达式e是左值，类型为T，那么decltype(e)是T&；如果是右值，则是T。
+
+	decltype(f()) sum = x; //sum的类型就是函数f的返回类型
+	const int ci = 0, &cj = ci;
+	decltype(ci) x = 0; //x的类型就是const int
+	decltype(cj) y = x; //y的类型是const int&，y绑定到变量x
+	decltype(cj) z; //错误：z是一个引用，必须初始化
+
+#### 自动推导类型auto
+
+auto非常的好用，它的最大好处就是让代码简洁，尤其是那些模板类的声明，比如：STL中的容器的迭代子类型。
+
+	vector<int> v = {1, 2, 3, 4};
+	auto it = v.begin(); //auto就是vector<int>::iterator
+
+代码简洁了很多，但是如果类型嵌套太多，auto自动推导就会失败，所以auto只适用于简单的情况。
+
+#### lambda表达式
+
+lambda表达式更多用在需要定义适用函数的地方，使用lambda表达式的话就会非常的简单，比如使用仿函数的地方。lambda的基本格式如下：
+
+	[capture](parameters)->return_type {body}
+
+capture就是lambda表达式所在函数中的变量，这个body函数体就可以直接使用，parameters就是调用lambda表达式所需要的参数，函数体中有返回值。
+比较大小的lambda表达式：
+
+	[](const string &a, const string &b)
+	{ return a.size() < b.size(); }
+
+再看个例子：
+
+	int main()
+	{
+		char s[] = "Hello World!";
+		int uppercase = 0;
+		for_each(s, s + sizeof(s), [&uppercase](char c){
+			if(isupper(c))
+				uppercase++;
+		});
+
+		cout << uppercase << " uppercase letters in : " << s << endl;
+
+所以C++引入Lambda的最主要原因就是可以定义匿名函数和编译器会把其转成函数对象，用lambda表达式代替函数对象。
+
+#### 统一的初始化语法
+
+C++11中都可以用大括号初始化方法。
+
+	int array[3] = {0, 1, 2};
+	vector<string> vs={ "first", "second", "third"};
+
+#### 使用=default和=delete
+
+C++中类有几个默认的函数，构造函数，析构函数，拷贝构造函数，operator=，有时候我们希望类自动有这些函数，有时候希望类不拥有这些函数，这时候就需要合理的使用=default和=delete。
+
+对于=default：
+	struct A
+	{
+		A()=default;
+		virtual ~A()=default;
+	}
+
+再比如=delete：
+	struct nocopy
+	{
+		nocopy& operator=(const nocopy&) = delete;
+		nocopy (const nocopy&) = delete;
+	};
+
+	nocopy a;
+	nocopy b(a); //编译错误，拷贝构造函数被禁止
+
+#### C++11中的右值引用和move
+
+C++ 11增加一个新的引用（reference）类型称作右值引用（R-value reference），标记为typename &&。他们能够以non-const值的方式传入，允许对象去改动他们。这项修正允许特定对象创造出move语义。
+
+	class string
+	{
+		string (string&&);
+		string&& operator(string&&);
+	};
+
+	string a = "hello";
+	string b = a; //a的值复制给b，没有拷贝，只有交换操作
+
+#### 智能指针
+
+智能指针是C++中资源管理的利器，使用智能指针能够避免很多问题，比如new了对象忘了delete，这使程序员只需要去关心创建对象，而不用去关心对象的声明周期，智能指针能够帮助你很好的管理好对象的析构。对于智能指针问题，大家也可以参考一下《Effective C++》中的描述。

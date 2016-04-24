@@ -1,0 +1,79 @@
+---
+layout:     post
+title:      利用二级指针删除单项链表
+date:       2016-06-09 16:22:00
+author:     "lemon"
+categories: 编程
+---
+
+看coolshell上的文章一些总结。
+
+## 利用一级指针删除单向链表
+
+利用一级指针删除链表比较常见，代码如下：
+
+    typedef struct node
+    {
+        struct node * next;
+        ....
+    } node;
+
+    typedef bool (* remove_fn)(node const * v);
+
+    // Remove all nodes from the supplied list for which the
+    // supplied remove function returns true.
+    // Returns the new head of the list.
+    node * remove_if(node * head, remove_fn rm)
+    {
+        for (node * prev = NULL, * curr = head; curr != NULL; )
+        {
+            node * const next = curr->next;
+            if (rm(curr))
+            {
+                if (prev)
+                    prev->next = next;
+                else
+                    head = next;
+                free(curr);
+            }
+            else
+                prev = curr;
+            curr = next;
+        }
+        return head;
+    }
+
+这里remove_fn由调用查提供的一个是否删除当前实体结点的函数指针，其会判断删除条件是否成立。这段代码维护了两个节点指针prev和curr，标准的教科书写法——删除当前结点时，需要一个previous的指针，并且还要这里还需要做一个边界条件的判断——curr是否为链表头。于是，要删除一个节点（不是表头），只要将前一个节点的next指向当前节点的next指向的对象，即下一个节点（即：prev->next = curr->next），然后释放当前节点。
+
+## 利用二级指针删除单向链表
+
+有效地利用二级指针，将其作为管理和操作链表的首要选项，实现删除操作。代码如下：
+
+    void remove_if(node ** head, remove_fn rm)
+    {
+        for (node** curr = head; *curr; )
+        {
+            node * entry = *curr;
+            if (rm(entry))
+            {
+                *curr = entry->next;
+                free(entry);
+            }
+            else
+                curr = &entry->next;
+        }
+    }
+
+不需要prev指针了，也不需要再去判断是否为链表头了，但是，curr变成了一个指向指针的指针。这正是这段程序的精妙之处。
+删除节点是表头的情况，输入参数中传入head的二级指针，在for循环里将其初始化curr，然后entry就是*head(*curr)，我们马上删除它，那么第8行就等效于*head = (*head)->next，就是删除表头的实现。
+删除节点不是表头的情况，对于上面的代码，我们可以看到：
+
+- （第12行）如果不删除当前结点 —— curr保存的是当前结点next指针的地址。
+- （第5行） entry 保存了 *curr —— 这意味着在下一次循环：entry就是prev->next指针所指向的内存。
+- （第8行）删除结点：*curr = entry->next; —— 于是：prev->next 指向了 entry -> next;
+
+参考下图理解：
+
+![pointer](/images/pointer/1.png)
+
+总结：二级指针的精髓就是可以用来操作一级指针，从上面可以看出，cur是指向next的指针（如果为头部可以假想一个），*cur类似于前面的prev->next，二级指针的妙处就在于对于一级指针的操作。

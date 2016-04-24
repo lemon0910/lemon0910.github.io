@@ -1,0 +1,107 @@
+---
+layout:     post
+title:      gtest的使用
+date:       2014-11-28 14:10:00
+author:     "lemon"
+categories: 测试
+---
+
+gtest是googletest的简称，它是一款google内部使用的测试驱动（当编写一个程序单元时，要先对这个程序单元编写其测试代码，然后再编写这个程序单元，这就是测试驱动）开发工具。gtest是一套单元测试框架，使用起来非常的方便，能很好地帮助编写测试代码。
+
+## gtest的安装
+
+首先，你要去下载gtest的安装包，可以去[官网下载](https://code.google.com/p/googletest/downloads/list)，下载以后进行解压并进入目录，编译链接生成静态链接库libgtest.a，当链接测试程序时需要它。
+
+## gtest程序的断言
+
+在编写gtest之前，我们首先要知道断言的意义。断言就像一种预期。举个例子，我们编写sum函数，用来计算整数的和，那么对于输入的整数，我们就会预期执行sum以后得到的结果，而断言就是用来判断正确的结果和sum的返回结果是否相同，这样就可以确定sum程序是否正确。所以，自己要编写很多测试样本，然后用断言来判断是否正确。经常用到的断言主要有3种，条件断言，二进制断言和字符断言。
+
+条件断言如下:
+![condition](/images/gtest/1.png)
+
+二进制断言如下：
+![binary](/images/gtest/2.png)
+
+字符断言如下：
+![string](/images/gtest/3.png)
+
+从图片中看得非常的清楚，就是检测结果是否相同，其中，Fatal assertion如果出错程序就会停止执行，而Nonfatal assertion如果出错程序也会继续往下执行。
+
+## gtest程序的编写
+
+还是举个例子方便说明：
+
+	TEST(Calculate, sum)
+	{
+		EXPECT_EQ(3, sum(1, 2));
+		EXPECT_EQ(6, sum(4, 2));
+		EXPECT_EQ(101, sum(1, 100));
+	}
+
+这里的Calculate和sum自己定义，这里的意思是测试Calculate模块下面的sum函数，在程序运行时会打印这两个信息，这样就方便阅读，所以名字最好有一些意义。EXPECT_EQ(3, sum(1, 2) )的意思是我预期sum(1, 2)的执行结果是3，如果sum(1, 2)的返回值是3则通过，否则失败，这些信息都会被打印出来。好了，做到这你就会编写基本的测试单元了。
+
+这里我们把一个TEST就叫做一个测试单元。有时候你有多个测试单元并且这些测试单元共用一些数据，这时候我们就可以用一下gtest的高级特性了。假设我们有个类队列，定义如下:
+
+	template <typename E> // E is the element type.
+	class Queue {
+	public:
+		Queue();
+		void Enqueue(const E& element);
+		E* Dequeue(); // Returns NULL if the queue is empty.
+		size_t size() const;
+	};
+
+我们编写这个类方法的测试代码，首先是共用数据：
+
+	class QueueTest : public ::testing::Test {
+	protected:
+		virtual void SetUp() {
+			q1_.Enqueue(1);
+			q2_.Enqueue(2);
+			q2_.Enqueue(3);
+		}
+
+	// virtual void TearDown() {}
+
+	Queue<int> q0_;
+	Queue<int> q1_;
+	Queue<int> q2_;
+	};
+
+QueueTest里面存放的就是共用数据，后面要被多个测试单元使用，SetUp类似于构造函数，初始化数据，TearDown类似于析构函数。好了，看完共享数据后，来看看测试单元的编写：
+
+	TEST_F(QueueTest, IsEmptyInitially) {
+		EXPECT_EQ(0, q0_.size());
+	}
+
+	TEST_F(QueueTest, DequeueWorks) {
+		int* n = q0_.Dequeue();
+		EXPECT_EQ(NULL, n);
+
+		n = q1_.Dequeue();
+		ASSERT_TRUE(n != NULL);
+		EXPECT_EQ(1, *n);
+		EXPECT_EQ(0, q1_.size());
+		delete n;
+
+		n = q2_.Dequeue();
+		ASSERT_TRUE(n != NULL);
+		EXPECT_EQ(2, *n);
+		EXPECT_EQ(1, q2_.size());
+		delete n;
+	}
+
+可以看到，TEST变成了TEST_F，然后第一个参数必须是QueueTest，不能修改，同时，第一个TEST_F修改了QueueTest的数据不影响第二个TEST_F。
+看完这些以后，就是main函数的编写了:
+
+    #include <gtest/gtest.h>
+
+	int main(int argc, char **argv) {
+		::testing::InitGoogleTest(&argc, argv);
+		return RUN_ALL_TESTS();
+	}
+
+这样就会运行所有的测试用例了。
+
+
+

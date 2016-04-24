@@ -1,0 +1,107 @@
+---
+layout:     post
+title:      git简明使用
+date:       2015-05-04 12:50:00
+author:     "lemon"
+categories: 工具
+---
+
+git的基本原理介绍。
+
+## git客户端安装
+
+下载windows客户端请点击[这里](http://msysgit.github.io/)，linux下面根据不同的发行版使用相应的软件管理器即可。比如ubuntu下面安装输入命令：
+
+	sudo apt-get install git
+
+## git的作用
+
+Git是目前世界上最先进的分布式版本控制系统。当我们编写一个.cpp文件时，因为各种问题，我们需要不断地对文件进行修改，有时候需要看修改之前的版本，所以我们要维护一堆版本，这时候便需要用git了，git可以对你的文件进行版本控制，查看你的所有改动，从而很好地管理你的文件。同时，git也支持别人和你协作开发，对文件进行修改和查看等操作。一句话，git是进行版本控制的。
+
+## git使用
+
+### git仓库
+假设我们要管理的文件都放在目录lemon下面，首先创建文件夹，打开，然后进行git的初始化操作：
+
+	mkdir lemon
+	cd lemon
+	git init
+
+执行完上面的操作后就可以进行git的操作了，此时我们可以吧lemon目录叫做仓库。除了自己创建仓库，我们还可以使用别人的仓库：
+
+	git clone /path/to/repository
+	git clone username@host:/path/to/repository
+
+### 工作流
+
+好了，有了仓库以后，你的仓库就由git维护的三棵树组成。第一个是你的工作目录，它持有实际文件；第二个是暂存区（Index），它像个缓存区域，临时保存你的改动；最后是HEAD，它指向你最后一次提交的结果。
+
+![tree](/images/git/1.png)
+
+### 文件管理
+
+好了，这时候你便在该目录下编写文件，比如说tree.cc，这时候git还无法检测到该文件，你需要提交到index中去：
+
+	git add filename #添加文件filename
+	git add * #添加所有的文件
+
+完成这一部以后，还需要将改动提交到HEAD：
+
+	git commit -m "代码提交信息"
+
+### 推送改动
+
+现在，你的改动已经提交到HEAD中了。好了，如果你还有一个远端仓库的话，你便需要将你的改动发送到远端：
+
+	git remote add origin <server>  #只需要执行一次，首次添加远端仓库时执行
+	git push origin master  #将这些改动提交到远端仓库，以把 master 换成你想要推送的任何分支
+
+### 分支
+
+分支是用来将特性开发绝缘开来的。在你创建仓库的时候，master 是“默认的”分支。在其他分支上进行开发，完成后再将它们合并到主分支上。
+
+![branch](/images/git/2.png)
+
+相关的操作命令如下：
+
+	git checkout -b feature_x  #创建一个叫做“feature_x”的分支，并切换过去
+	git checkout master   #切换回主分支
+	git branch -d feature_x   #把新建的分支删掉
+	git push origin <branch>  #除非你将分支推送到远端仓库，不然该分支就是 不为他人所见的
+
+### 更新合并
+
+当你要从远端仓库更新自己的仓库时，执行命令：
+
+	git pull origin 分支名
+
+该命令是fetch和merge命令的合体。如果你要合并分支的话，执行命令：
+
+	git merge branch名
+
+但是，在执行上面的命令时可能有冲突，这时候就需要你修改这些文件来手动合并这些冲突。改完之后，你需要执行如下命令以将它们标记为合并成功：
+
+	git add filename
+
+## git配置
+
+git的配置信息一般保存在用户当前目录~下的.gitconfig文件中，使用git config设置的命令也会保存在这个文件当中，最常见的就是设置用户名和邮箱，设置git使用的默认编辑器，命令如下：
+
+	git config --global user.name "用户名"
+	git config --global user.email "用户邮箱"
+	git config --global core.editor vim
+
+如果用了 --global 选项，那么更改的配置文件就是位于你用户主目录下的那个，以后你所有的项目都会默认使用这里配置的用户信息。如果要在某个特定的项目中使用其他名字或者电邮，只要去掉 --global 选项重新配置即可，新的设定保存在当前项目的 .git/config 文件里。此时查看~/.gitconfig文件，内容如下：
+
+![gitconfig](/images/git/3.png)
+
+如果使用github，那么就需要在本地配置rsa秘钥，这样双方才能够通信，首先要在本地~/.ssh文件夹下面生成公钥和私钥。
+
+	ssh-keygen -t rsa -C "用户邮箱"
+
+连续三个回车，得到了两个文件：id_rsa和id_rsa.pub，这时候将id_rsa.pub中的中的内容添加到github中的ssh设置中就可以通信了。
+
+	ssh -T git@github.com
+
+使用上面命令就可以判断是否设置成功。
+
