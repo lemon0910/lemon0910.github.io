@@ -53,13 +53,14 @@ HTTP响应报文由服务端返回给客户端，用来响应客户端的请求�
 
 其中，1，2，6步对于每个服务端来说都是一样的，可以使用第三方库进行处理。3，4，5部分需要进行相关的业务处理。下面以python的库为例，说明相关实现。
 
-    import BaseHTTPServer
+```python
+import BaseHTTPServer
 
-    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-        '''Handle HTTP requests by returning a fixed 'page'.'''
+class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    '''Handle HTTP requests by returning a fixed 'page'.'''
 
-        # Page to send back.
-        Page = '''\
+    # Page to send back.
+    Page = '''\
     <html>
     <body>
     <p>Hello, web!</p>
@@ -68,19 +69,20 @@ HTTP响应报文由服务端返回给客户端，用来响应客户端的请求�
     '''
 
     # Handle a GET request.
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html")
-        self.send_header("Content-Length", str(len(self.Page)))
-        self.end_headers()
-        self.wfile.write(self.Page)
+def do_GET(self):
+    self.send_response(200)
+    self.send_header("Content-Type", "text/html")
+    self.send_header("Content-Length", str(len(self.Page)))
+    self.end_headers()
+    self.wfile.write(self.Page)
 
-    #----------------------------------------------------------------------
+#----------------------------------------------------------------------
 
-    if __name__ == '__main__':
-        serverAddress = ('', 8080)
-        server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
-        server.serve_forever()
+if __name__ == '__main__':
+    serverAddress = ('', 8080)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+```
 
 上面实现了一个简单的HTTP服务器，客户端访问的话将返回Hello, web!
 

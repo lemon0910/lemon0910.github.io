@@ -18,12 +18,14 @@ C++11中的很多新特性在boost库中可以找到影子，比如说智能指�
 
 for语句是C++中经常使用到的语句，这里介绍一下，希望大家能尽早的熟悉。
 
-	string s("hello world");
+```c++
+string s("hello world");
 
-	for(char &c : s)
-		c = toupper(c);
+for(char &c : s)
+	c = toupper(c);
 
-	cout << s << endl;
+cout << s << endl;
+```
 
 这里，c依次被赋予s中的每个元素，因为是引用类型，所以s中的值都会被改成大写，s被改变成"HELLO WORLD"。
 
@@ -44,8 +46,10 @@ decltype是一个操作符，用来获得括号内表达式的类型。规则如
 
 auto非常的好用，它的最大好处就是让代码简洁，尤其是那些模板类的声明，比如：STL中的容器的迭代子类型。
 
-	vector<int> v = {1, 2, 3, 4};
-	auto it = v.begin(); //auto就是vector<int>::iterator
+```c++
+vector<int> v = {1, 2, 3, 4};
+auto it = v.begin(); //auto就是vector<int>::iterator
+```
 
 代码简洁了很多，但是如果类型嵌套太多，auto自动推导就会失败，所以auto只适用于简单的情况。
 
@@ -58,21 +62,26 @@ lambda表达式更多用在需要定义适用函数的地方，使用lambda表�
 capture就是lambda表达式所在函数中的变量，这个body函数体就可以直接使用，parameters就是调用lambda表达式所需要的参数，函数体中有返回值。
 比较大小的lambda表达式：
 
-	[](const string &a, const string &b)
-	{ return a.size() < b.size(); }
+```c++
+[](const string &a, const string &b)
+{ return a.size() < b.size(); }
+```
 
 再看个例子：
 
-	int main()
-	{
-		char s[] = "Hello World!";
-		int uppercase = 0;
-		for_each(s, s + sizeof(s), [&uppercase](char c){
-			if(isupper(c))
-				uppercase++;
-		});
+```c++
+int main()
+{
+	char s[] = "Hello World!";
+	int uppercase = 0;
+	for_each(s, s + sizeof(s), [&uppercase](char c){
+		if(isupper(c))
+			uppercase++;
+	});
 
-		cout << uppercase << " uppercase letters in : " << s << endl;
+	cout << uppercase << " uppercase letters in : " << s << endl;
+}
+```
 
 所以C++引入Lambda的最主要原因就是可以定义匿名函数和编译器会把其转成函数对象，用lambda表达式代替函数对象。
 
@@ -80,42 +89,52 @@ capture就是lambda表达式所在函数中的变量，这个body函数体就可
 
 C++11中都可以用大括号初始化方法。
 
-	int array[3] = {0, 1, 2};
-	vector<string> vs={ "first", "second", "third"};
+```c++
+int array[3] = {0, 1, 2};
+vector<string> vs={ "first", "second", "third"};
+```
 
 #### 使用=default和=delete
 
 C++中类有几个默认的函数，构造函数，析构函数，拷贝构造函数，operator=，有时候我们希望类自动有这些函数，有时候希望类不拥有这些函数，这时候就需要合理的使用=default和=delete。
 
 对于=default：
-	struct A
-	{
-		A()=default;
-		virtual ~A()=default;
-	}
+
+```c++
+struct A
+{
+	A()=default;
+	virtual ~A()=default;
+}
+```
 
 再比如=delete：
-	struct nocopy
-	{
-		nocopy& operator=(const nocopy&) = delete;
-		nocopy (const nocopy&) = delete;
-	};
 
-	nocopy a;
-	nocopy b(a); //编译错误，拷贝构造函数被禁止
+```c++
+struct nocopy
+{
+	nocopy& operator=(const nocopy&) = delete;
+	nocopy (const nocopy&) = delete;
+};
+
+nocopy a;
+nocopy b(a); //编译错误，拷贝构造函数被禁止
+```
 
 #### C++11中的右值引用和move
 
 C++ 11增加一个新的引用（reference）类型称作右值引用（R-value reference），标记为typename &&。他们能够以non-const值的方式传入，允许对象去改动他们。这项修正允许特定对象创造出move语义。
 
-	class string
-	{
-		string (string&&);
-		string&& operator(string&&);
-	};
+```c++
+class string
+{
+	string (string&&);
+	string&& operator(string&&);
+};
 
-	string a = "hello";
-	string b = a; //a的值复制给b，没有拷贝，只有交换操作
+string a = "hello";
+string b = a; //a的值复制给b，没有拷贝，只有交换操作
+```
 
 #### 智能指针
 

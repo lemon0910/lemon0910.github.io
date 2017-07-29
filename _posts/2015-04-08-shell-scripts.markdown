@@ -12,18 +12,22 @@ categories: 编程
 
 最简单的使用就是用echo打印信息：
 
-	echo "Hello World!"
-	num=10
-	echo $num
-	echo ${#num} #返回num的长度
+```shell
+echo "Hello World!"
+num=10
+echo $num
+echo ${#num} #返回num的长度
+```
 
 如果echo后面的内容中有转义字符，则必须加上-e选项，如：
 
-	echo -e "1\t2\t3"   #必须加上-e选项转义字符才有效
-	##下面是echo带颜色玩法，格式是`\e[背景色;前景色;高亮格式m`
-	echo -e '\e[0;33;1mHello\e[0m World'   # 带颜色的玩法
-	echo -e '\e[0;33;4mHello\e[0m World'   # 带颜色+下划线
-	echo -e '\e[0;33;5mHello\e[0m World'   # 带颜色+闪烁
+```shell
+echo -e "1\t2\t3"   #必须加上-e选项转义字符才有效
+##下面是echo带颜色玩法，格式是`\e[背景色;前景色;高亮格式m`
+echo -e '\e[0;33;1mHello\e[0m World'   # 带颜色的玩法
+echo -e '\e[0;33;4mHello\e[0m World'   # 带颜色+下划线
+echo -e '\e[0;33;5mHello\e[0m World'   # 带颜色+闪烁
+```
 
 另一个打印的命令是printf，和C语言中的printf很像，也可以带格式，但不如echo常用。
 
@@ -31,21 +35,25 @@ categories: 编程
 
 变量让脚本有了活力，基本格式如下：
 
-	num=10
-	echo ${num}
+```shell
+num=10
+echo ${num}
+```
 
 在linux系统中，有些变量是系统启动时定义好的，它们是常用的环境变量，比如说PATH,SHELL,HOME等。
 
 ### 整数运算
 
-	echo $(( 1+1 ))        # 最简单的1+1
-	echo $(( (1+2)*3/4 ))  # 表达式中还可以带括号
-	echo $(( 1<<32 ))      # 左移右移也支持，但仅限于-4294967296~4294967296之间的数值
-	echo $(( 1&3 ))        # &、^、|、~ 这样的位操作亦支持
-	(( i=1+2 ))            # 将1+2计算出结果后赋值给i，后续若`echo ${i}`会得到3
-	i++ ))              # 变量i自增1
-	(( i+=3 ))             # 变量i自增3
-	#进行整数运算的方法还有：`expr`、`$[]`、`let`等`shell`等内置命令，也可调用`bc`、`python`等外部工具进行更复杂的数学运算
+```shell
+echo $(( 1+1 ))        # 最简单的1+1
+echo $(( (1+2)*3/4 ))  # 表达式中还可以带括号
+echo $(( 1<<32 ))      # 左移右移也支持，但仅限于-4294967296~4294967296之间的数值
+echo $(( 1&3 ))        # &、^、|、~ 这样的位操作亦支持
+(( i=1+2 ))            # 将1+2计算出结果后赋值给i，后续若`echo ${i}`会得到3
+((i++ ))              # 变量i自增1
+(( i+=3 ))             # 变量i自增3
+#进行整数运算的方法还有：`expr`、`$[]`、`let`等`shell`等内置命令，也可调用`bc`、`python`等外部工具进行更复杂的数学运算
+```
 
 ### 字符串
 
@@ -140,49 +148,62 @@ categories: 编程
 
 普通数组：
 
-	a=()         # 空数组
-	a=(1 2 3)    # 元素为1,2,3的数组
-	echo ${#a[*]}  # 数组长度
-	echo ${a[2]}   # 下标为2的元素值（下标从0开始）
-	a[1]=0         # 给下标为1的元素赋值
+```shell
+a=()         # 空数组
+a=(1 2 3)    # 元素为1,2,3的数组
+echo ${#a[*]}  # 数组长度
+echo ${a[2]}   # 下标为2的元素值（下标从0开始）
+a[1]=0         # 给下标为1的元素赋值
+```
 
 遍历数组：
+
+```shell
 	for i in ${a[*]}
 	do
 		echo ${i}
 	done
 
 	unset a        # 清空数组
+```
 
 关联数组：关联数组可以用于存储`key-value`型的数据，其功能相当于`C++`中的`map`或`python`中的`dict`。
 
-	declare -A a        # 声明关联数组（必须有此句）
-	a=(["apple"]="a1" ["banana"]="b2" ["carrot"]="c3")   # 初始化关联数组
-	echo ${#a[*]}       # 获取元素个数
-	echo ${a["carrot"]} # 获取元素值
-	a["durian"]="d4"    # 插入或修改元素
-	echo ${!a[*]}       # 获取所有的key
-	unset a["banana"]   # 删除元素
+```shell
+declare -A a        # 声明关联数组（必须有此句）
+a=(["apple"]="a1" ["banana"]="b2" ["carrot"]="c3")   # 初始化关联数组
+echo ${#a[*]}       # 获取元素个数
+echo ${a["carrot"]} # 获取元素值
+a["durian"]="d4"    # 插入或修改元素
+echo ${!a[*]}       # 获取所有的key
+unset a["banana"]   # 删除元素
+```
 
 遍历数组(仅value):
 
-	for i in ${a[*]}
-	do
-		echo ${i}
-	done
+```shell
+for i in ${a[*]}
+do
+	echo ${i}
+done
+```shell
 
 遍历数组(key和value):
 
-	for key in ${!a[*]}
-	do
-		echo "${key} ==> ${a[${key}]}"
-	done
+```shell
+for key in ${!a[*]}
+do
+	echo "${key} ==> ${a[${key}]}"
+done
 
-	unset a             # 清空数组
+unset a             # 清空数组
+```
 
 将命令执行结果存入变量:
 
-	TEMPPATH=`pwd`
+```shell
+TEMPPATH=`pwd`
+```
 
 ## if语句
 
@@ -265,36 +286,40 @@ if语句的格式：
 
 for循环语句的句式：
 
-	for i in {1..100}
-	do
-		echo ${i}
-	done
+```shell
+for i in {1..100}
+do
+	echo ${i}
+done
 
-	for ((i = 0; i < 100; i++))
-	do
-		echo ${i}
-	done
+for ((i = 0; i < 100; i++))
+do
+	echo ${i}
+done
 
-	for ((i = 0; i < 100; i+= 2))
-	do
-		echo ${i}
-	done
+for ((i = 0; i < 100; i+= 2))
+do
+	echo ${i}
+done
+```
 
 while、until语句句式：
 
-	i=0
-	while [[ ${i} -lt 100 ]]
-	do
-		echo ${i}
-		((i++))
-	done
+```shell
+i=0
+while [[ ${i} -lt 100 ]]
+do
+	echo ${i}
+	((i++))
+done
 
-	i=0
-	until [[ ${i} -ge 100 ]]
-	do
-		echo ${i}
-		((i++))
-	done
+i=0
+until [[ ${i} -ge 100 ]]
+do
+	echo ${i}
+	((i++))
+done
+```
 
 ## 换行符处理
 
@@ -343,19 +368,23 @@ while、until语句句式：
 
 管道的写法为 cmd1 | cmd2，功能是依次执行cmd1和cmd2，并将cmd1的标准输出作为cmd2的标准输入，例如：
 
-	echo "1+1" | bc
+```shell
+echo "1+1" | bc
+```
 
 管道可以多级拼接：cmd1 | cmd2 | cmd3 | ...，管道的返回值为最后一级命令的返回值
 
-	LINE_NO=0
-	cat test.txt |
-	while read LINE
-	do
-		(( LINE_NO++ ))
-		echo "${LINE_NO} ${LINE}"
-	done
+```shell
+LINE_NO=0
+cat test.txt |
+while read LINE
+do
+	(( LINE_NO++ ))
+	echo "${LINE_NO} ${LINE}"
+done
 
-	# echo "${LINE_NO}"
+# echo "${LINE_NO}"
+```
 
 ## 通配符
 
@@ -371,8 +400,10 @@ while、until语句句式：
 
 找网络中所有可以ping的通的服务器的IP：
 
-	for ip in 192.168.234.{1..255}
-	do
-		ping ${ip} -w 1 &> /dev/null && echo ${ip} is Alive
-	done
+```shell
+for ip in 192.168.234.{1..255}
+do
+	ping ${ip} -w 1 &> /dev/null && echo ${ip} is Alive
+done
+```
 

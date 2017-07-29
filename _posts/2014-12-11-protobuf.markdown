@@ -52,22 +52,24 @@ phonenumber的方法如下：
 
 下面看一个使用例子：
 
-    #include "person.pb.h"
-	#include <iostream>
-	#include <string>
+```c++
+#include "person.pb.h"
+#include <iostream>
+#include <string>
 
-	using namespace std;
+using namespace std;
 
-	int main()
-	{
-		lemon::Person p;
-		p.set_name("lemon");
-		cout << p.name() << endl;
-		p.set_email("lemon_wonder@163.com");
-		p.add_phonenumber("13856888888");
-		p.add_phonenumber("13856688888");
+int main()
+{
+	lemon::Person p;
+	p.set_name("lemon");
+	cout << p.name() << endl;
+	p.set_email("lemon_wonder@163.com");
+	p.add_phonenumber("13856888888");
+	p.add_phonenumber("13856688888");
 
-		for(unsigned int i = p.phonenumber_size(); i++)
-			cout << p.phonenumber(i);
+	for(unsigned int i = p.phonenumber_size(); i++)
+		cout << p.phonenumber(i);
 
-	}
+}
+```

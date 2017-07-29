@@ -8,9 +8,11 @@ categories: 编程
 
 在c语言程序中，如linux内核和其它开源代码中，经常可以看到下面的代码：
 
-    do {
-        ...
-    }while(0)
+```c
+do {
+    ...
+}while(0)
+```
 
 这段代码并非循环，主要用于解决宏定义的一些问题以及其它用途，总结如下。
 
@@ -18,73 +20,93 @@ categories: 编程
 
 宏定义是c语言中非常复杂的功能，使用正确可以大大提高开发效率，但是如果在定义时没有认真检查，那么很容易就会出现各种问题，使用do {...} while(0)可以用来解决宏定义中的一些问题。
 
-    #define	SLIST_REMOVE_HEAD(head, field) do {				\
-	    (head)->slh_first = (head)->slh_first->field.sle_next;		\
-    } while (0)
+```c
+#define	SLIST_REMOVE_HEAD(head, field) do {				\
+	(head)->slh_first = (head)->slh_first->field.sle_next;		\
+} while (0)
+```
 
 上面的代码是libevent中关于链表的一个功能实现，使用到了do {...} while(0)来进行宏定义。在Linux内核和其它一些著名的C库中有许多使用do{...}while(0)的宏定义。这种宏的用途是什么？
 *do {...} while(0)在C中是唯一的构造程序，让你定义的宏总是以相同的方式工作，这样不管怎么使用宏（尤其在没有用大括号包围调用宏的语句），宏后面的分号也是相同的效果。* 上面的话等价于使用do {...} while(0)构造后的宏定义不会受到大括号、分号等的影响，总是会按你期望的方式调用运行。
 举个例子：
 
-    #define test(x) func1(x); func2(x)
+```c
+#define test(x) func1(x); func2(x)
+```
 
 直接调用：
 
-    test(x);
+```c
+test(x);
+```
 
 这将宏扩展为：
 
-    func1(x); func2(x);
+```c
+func1(x); func2(x);
+```
 
 上面行为正确，但如果使用下面的定义：
 
-    if(condition)
-        test(x);
+```c
+if(condition)
+    test(x);
+```
 
 扩展的结果结出现问题，上面的语句等价于：
 
-    if(condition)
-        func1(x);
-    func2(x);
+```c
+if(condition)
+    func1(x);
+func2(x);
+```
 
 这是宏定义很常见的错误。几乎在所有的情况下，期望写多语句宏来达到正确的结果是不可能的。在没有do/while(0)的情况下，你不能让宏像函数一样行为。
 如果我们使用do{...}while(0)来重新定义宏，即：
 
-    #define test(x) do { func1(x); func2(x)} while(0)
+```c
+#define test(x) do { func1(x); func2(x)} while(0)
+```
 
 该语句的功能和前面相同，do能确保大括号里的逻辑能被执行，而while(0)能确保该逻辑只被执行一次，即与没有循环时一样。
 对于上面的if语句，等价于：
 
-    if(condition)
-        do {
-            func1(x);
-            func2(x);
-        }while(0);
+```c
+if(condition)
+    do {
+        func1(x);
+        func2(x);
+    }while(0);
 
-     //下面的语句和上面相同
-     if(condition) {
-         func1(x);
-         func2(x);
-     }
+//下面的语句和上面相同
+if(condition) {
+    func1(x);
+    func2(x);
+}
+```
 
 这里可能有人会问，为什么不用大括号直接把宏包围起来呢？为什么非得使用do/while(0)逻辑呢？例如：
 
-    #define test(x) { func1(x); func2(x); }
+```c
+#define test(x) { func1(x); func2(x); }
+```
 
 这对于上面举的if语句的确能被正确扩展，但是如果使用if-else语句就不行：
 
-    if(condition)
-        test(x);
-    else
-        ...
+```c
+if(condition)
+    test(x);
+else
+    ...
 
-    //宏扩展结果
-    if(condition) {
-        func1(x);
-        func2(x);
-    };
-    else
-        ...
+//宏扩展结果
+if(condition) {
+    func1(x);
+    func2(x);
+};
+else
+    ...
+```
 
 从上面可以看出，扩展的结果有语法错误。
 综上，总结如下：Linux和其它代码库里的宏都用do/while(0)来包围执行逻辑，因为它能确保宏的行为总是相同的，而不管在调用代码中使用了多少分号和大括号。
@@ -93,46 +115,50 @@ categories: 编程
 
 在一些c语言程序中，经常可以看到使用goto语句进行错误处理：
 
-    int test()
+```c
+int test()
+
+    dosomething...;
+    if(error)
     {
-        dosomething...;
-        if(error)
-        {
-            goto END;
-        }
-
-        dosomething...;
-        if(error)
-        {
-            goto END;
-        }
-        dosomething...;
-
-    END:
-        dosomething...;
+        goto END;
     }
+
+    dosomething...;
+    if(error)
+
+        goto END;
+    }
+    dosomething...;
+
+END:
+    dosomething...;
+}
+```
 
 但由于goto关键字可能会使代码不易读，因此许多人都不推荐使用它，那么可以使用do{...}while(0)来解决这一问题：
 
-    int test()
-    {
-        do{
-            dosomething...;
-            if(error)
-            {
-                break;
-            }
-
-            dosomething...;
-            if(error)
-            {
-                break;
-            }
-            dosomething...;
-        }while(0);
+```c
+int test()
+{
+    do{
+        dosomething...;
+        if(error)
+        {
+            break;
+        }
 
         dosomething...;
-    }
+        if(error)
+        {
+            break;
+        }
+        dosomething...;
+    }while(0);
+
+    dosomething...;
+}
+```
 
 这里，我们使用do{...}while(0)来包含函数的主要部分，同时使用break替换goto，代码的可读性增强了。
 
@@ -140,7 +166,9 @@ categories: 编程
 
 由于内核不同体系结构的限制，我们可能需要多次使用空宏。在编译的时候，这些空宏会产生警告，为了避免这种警告，我们可以使用do{...}while(0)来定义空宏：
 
-    #define EMPTYMICRO do{}while(0)
+```c
+#define EMPTYMICRO do{}while(0)
+```
 
 这样在编译的时候就不会产生警告。
 
