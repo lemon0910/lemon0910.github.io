@@ -1,17 +1,11 @@
-# 白十三的码路 - 白山云技术博客
+# lemon's blog
 
 # Blog 地址
-http://baishancloud.github.io
-
-# 用法
-
-* fork此repo到你自己名下
-* _posts目录下添加待发布的内容
-* 发pull request
+http://lemon0910.github.io
 
 # _posts目录中的文件格式
 
-* 文件名：年-月-日-标题-作者.markdown，例如：`2017-05-24-rsa-padding-paulyang.markdown`
+* 文件名：年-月-日-标题-作者.markdown
 * 内容：见_posts目录中其他的例子
 
 
@@ -20,10 +14,10 @@ http://baishancloud.github.io
 ```
 ---
 layout: post
-title:  浅谈RSA Padding
-date:   2017-05-24 16:27:00
-author: Paul Yang
-categories: cryptography
+title:  Markdown CheatSheet
+date:   2017-07-29 15:19:00
+author: lemon
+categories: 其它
 ---
 ```
 
