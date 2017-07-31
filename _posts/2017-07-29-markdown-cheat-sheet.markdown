@@ -357,6 +357,11 @@ int main() {
 }
 ```
 
+```python
+def hello():
+    print 'hello'
+```
+
 ## 11 任务表
 
 输入：
@@ -384,4 +389,3 @@ int main() {
 输出：
 
 这就是 ~~删除线~~
-

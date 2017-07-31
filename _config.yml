@@ -12,4 +12,7 @@ twitter_username: lemon_wonder
 github_username:  lemon0910
 
 # Build settings
+highlighter: rouge
 markdown: kramdown
+  input: GFM
+  syntax_highlighter: rouge
