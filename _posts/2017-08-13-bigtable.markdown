@@ -1,0 +1,36 @@
+---
+layout:     post
+title:      BigTable学习
+date:       2017-08-13 23:20:00
+author:     "lemon"
+categories: 系统
+---
+
+记录阅读BigTable论文时思考的一些问题。
+
+### 问题
+
+1. GFS可能出现重复记录或者padding，Bigtable如何处理这种情况使得对外提供强一致性模型？
+BigTable需要往GFS记录的文件有两种，一种是commit-log，另一种是SSTable。对于commit-log，有日志号用来区分重复的日志，所以有重复没有问题。对于SSTable，通过记录在GFS中的偏移量作为索引实现去重。
+2. 为什么Bigtable设计成Root、Meta、User三级结构，而不是两级或者四级结构？
+主要考虑到保存的数据量大小，通过计算可以得出三级结构支持PB级别的数据。
+3. 读取某一行用户数据，最多需要几次请求？分别是什么？
+6次。主要考虑缓存不命中的情况下，对于三级结构，会进行递归查询。
+4. 如何保证同一个tablet不会被多台机器同时服务？
+由master保证。master读取chubby对应目录下的文件发现tablet server，并负责将tablet分发给tablet server，记录在表格中。
+5. Tablet在内存中的数据结构如何设计？
+使用LSM实现，参考leveldb中memtable使用跳表实现。
+6. 如何设计SSTable的存储格式？
+主要包含数据区和索引区，参考leveldb的实现。
+7. minor、merging、major这三种compaction有什么区别？
+minor负责将内存中的memtable转换成sstable，merging负责合并部分sstable，major负责合并所有的sstable。
+8. Tablet Server的缓存如何实现？
+主要有两种缓存，一种缓存从GFS中读取的数据。另一种缓存用户读取的kv数据。
+9. 如果tablet出现故障，需要将服务迁移到其它机器，这个过程需要排序操作日志。如何实现？
+一个tablet server只有一个commit-log，这个时候需要使用类似于mapreduce的方式先切分日志，然后发送到不同的tablet server进行排序找到对应tablet的操作日志。
+10. 如何使得tablet迁移过程停服务时间尽量短？
+进行两次minor freeze。第一次将内存中的数据保存到sstable中，第二次转换第一次过程中新写入内存的数据。
+11. tablet分裂的流程是怎样的？
+tablet的分裂是单机事务，包括了memtable和sstable的分裂。
+12. tablet合并的流程是怎样的？
+合并相对于分裂要复杂，为多机事务，需要先将两个tablet放到一个tablet server上，然后再执行合并。v
