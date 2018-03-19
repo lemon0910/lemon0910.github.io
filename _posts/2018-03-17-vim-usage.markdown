@@ -1,0 +1,71 @@
+---
+layout:     post
+title:      vim使用心得
+date:       2018-03-17 21:20:00
+author:     "lemon"
+categories: 工具
+---
+
+## 1 vim安装
+
+vim的安装如下：
+
+```bash
+wget https://github.com/vim/vim/archive/master.zip
+unzip master.zip
+cd vim-master
+cd src/
+./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --with-luajit --enable-fail-if-missing --prefix=‘此处为安装目录’
+make
+sudo make install
+```
+
+需要注意，在编译安装vim时，需要设置选项支持python，lua，cscope等，否则可能导致一些插件不能使用。
+[参考链接](https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source)
+neovim的安装如下：
+
+```bash
+git clone https://github.com/neovim/neovim
+cd neovim
+rm -r build/
+make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=指定目录"
+make install
+
+# python支持
+pip2 install neovim --upgrade
+pip3 install neovim --upgrade
+```
+
+不指定CMAKE_EXTRA_FLAGS会将neovim安装在/usr/local目录下。
+[参考链接](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+
+## 2 vim使用
+
+vim需要一段时间的学习才能够熟练使用，但一旦掌握，也会让你受益无穷。这里就不介绍如何学习vim，但推荐一些学习资料：
+
+1. vimtutor，vim自带的教程，学会掌握vim的基本使用。
+2. Practical Vim，学完后让我大彻大悟的一本书，里面介绍了很多的vim使用技巧，看完以后vim使用提高一个档次。
+3. [vim速查表](https://github.com/skywind3000/awesome-cheatsheets/blob/master/editors/vim.txt) 里面有常用的一些按键总结，多看多使用，融会贯通。
+
+学习vim一定要先从这些基本的开始，掌握了这些也就掌握了vim的精髓。vim用的久了就会想着学习vimscript，推荐几个教程：
+
+- Learn Vimscript the Hard Way，vimscript上手必备。
+- [五分钟上手vimscript](http://andrewscala.com/vimscript/)
+- [vim官方教程](https://neovim.io/doc/user/usr_41.html)
+
+## 3 插件
+
+插件就不具体介绍了，参考我的[插件配置](https://github.com/lemon0910/lemon-neovim/blob/master/vimrc.bundles)。我认为安装插件要仔细看一下插件在github的说明文档，里面会介绍一些常见的配置，按键映射等等。我每次浏览插件时也会看看作者的github主页，看看有没有其它插件。
+vim有了异步特性后，涌现了很多好用的插件，我最喜欢的几个是vim-plug，fzf，airline，它们让vim的使用体验提升了很多倍，尤其是fzf，实在是太强大了。
+
+## 4 经典配置
+
+想要优化自己的配置，需要参考网上一些比较经典的配置，我现在的配置就很受k-vim和space-vim的启发，十分的精简好用。我认为好用的vim配置如下：
+
+- k-vim 最早开始参考的，很经典，但是感觉有些插件比较老了，作者没有更新。
+- space-vim 我觉得很适合我的一款，大量参考其中的配置和插件，非常好。
+- spf13 名气很大，没有仔细研究，但感觉它有的功能我都配置了。
+- spacevim 活跃度很高，功能很强大，但是不适合我，主要是功能太多了。
+
+我个人认为属于自己的配置才是最好的配置，对于像spacevim那样的项目，功能特性太多，使用久了自己就需要去修改和做加减法。欢迎大家参考我的[配置](https://github.com/lemon0910/lemon-neovim)
+
