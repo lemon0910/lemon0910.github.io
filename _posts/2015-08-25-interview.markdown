@@ -1,9 +1,9 @@
 ---
 layout:     post
-title:      面试编程训练
+title:      面试编程
 date:       2015-08-25 16:47:00
 author:     "lemon"
-categories: 其它
+categories: 编程
 ---
 
 最近忙于找工作，看完了《剑指offer》这本书，深入思考其中的问题，感觉自己收获颇丰。回想自己的几次面试，总结经验和教训供大家思考。
