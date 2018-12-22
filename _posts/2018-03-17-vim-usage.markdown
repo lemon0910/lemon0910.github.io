@@ -1,10 +1,12 @@
 ---
 layout:     post
-title:      vim使用心得
+title:      vim心得
 date:       2018-03-17 21:20:00
 author:     "lemon"
 categories: 工具
 ---
+
+vim是我使用了很久的编辑器，在不同的开发机上折腾了很多次，有了很多经验，这里记录一下我常用到的内容。
 
 ## 1 vim安装
 
@@ -15,12 +17,38 @@ wget https://github.com/vim/vim/archive/master.zip
 unzip master.zip
 cd vim-master
 cd src/
-./configure --with-features=huge --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 --enable-cscope --with-luajit --enable-fail-if-missing --prefix=‘此处为安装目录’
+./configure --with-features=huge \
+                  --enable-multibyte \
+                  --enable-pythoninterp=yes \
+                  --with-python-config-dir=python的config路径 \
+                  --enable-perlinterp=yes \
+                  --enable-luainterp=yes \
+                  --enable-gui=gtk2 \
+                 --enable-cscope \
+                 --with-luajit \
+                 --enable-fail-if-missing \
+                 --prefix=‘此处为安装目录’
+比如说
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-pythoninterp=yes \
+            --with-python-config-dir=/home/zhixin.lm/usr/lib/python2.7/config/  \
+            --enable-python3interp=yes \
+            --with-python3-config-dir=/home/zhixin.lm/usr/lib/python3.7/config-3.7m-x86_64-linu-gnu/ \
+            --enable-gui=gtk2 \
+            --enable-cscope \
+            --enable-luainterp \
+            --with-luajit \
+            --enable-fail-if-missing \
+            --prefix='/home/zhixin.lm/usr' \
+            --with-lua-prefix='lua安装目录'
+
 make
-sudo make install
+make install
+
 ```
 
-需要注意，在编译安装vim时，需要设置选项支持python，lua，cscope等，否则可能导致一些插件不能使用。
+需要注意，在编译安装vim时，需要设置选项支持python，lua，cscope等，否则可能导致一些插件不能使用，python最好自己安装编译，放在自己指定的目录，编译python的时候增加选项--enable-shared编译出动态库，如果需要vim同时支持python和python3，手动设置pythondll和pythonthreedll两个选项。
 [参考链接](https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source)
 neovim的安装如下：
 

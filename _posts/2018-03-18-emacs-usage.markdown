@@ -1,23 +1,26 @@
 ---
 layout:     post
-title:      emacs使用心得
+title:      emacs学习心得
 date:       2018-03-18 21:23:00
 author:     "lemon"
 categories: 工具
 ---
 
 学习了emacs一段时间，走完了从入门到放弃这条路，这条路走得很折腾，记录一下自己的心得体会。首先展示一下我的成果[lemon-emacs](https://github.com/lemon0910/lemon-emacs.d)。
-对emacs感兴趣是因为大家说世界上只有两种编辑器：vim和emacs。vim学习使用了一段时间，自己已经很有心得，所以对emacs产生了兴趣，另一方面是因为大学时和朋友聊天说大牛都用emacs，emacs非常的强大，所以想体验一下到底和vim有什么不同。
 
-## 1 emacs使用
+emacs确实非常的强大，但也确实有点老气了，我用emacs主要在终端环境下，桌面主要用IDE和vscode。emacs的插件非常的强大，比如说company，helm，magit等等，
+质量非常的高。
+最开始入门是看子龙山人的视频spacemacs rocks，讲解了emacs的基本配置，概念等，能开始使用起来，后面部分主要讲解一个非常流行的emacs配置[spacemacs](https://github.com/syl20bnr/spacemacs)。使用该配置基本能做到开箱即用。我使用emacs一个很重的原因是因为evil插件，有了它，我可以使用vim模式，大部分情况下很使用vim基本相同，但随着学习的深入，还是很有必要去学习emacs自身的概念。有了对emacs的基本认识后，可以逛下[emacs论坛](https://emacs-china.org/)。
+后面主要是看很多的博客，从博客中学习到了很多的东西，这里推荐一下：
 
-第一次使用emacs实在mac下，确实足够简陋，感觉真是远古时代的东西，只是记住了"C-c C-x"是关闭。后来从网上发现了spacemacs，说只要会vim就可以很快迁移过来，所以使用了spacemacs的配置，确实可以完成大部分的操作。学习时吧SPC所有能触发的功能都看了一遍，确实比较容易记忆，比如"SPC b b"表示打开buffer，确实很好用。后面开始看子龙山人的emacs教学视频，因为之前有vim的配置经验，所以很快掌握了emacs的配置，并且开始尝试配置自己的.spacemacs文件，学习过程中把spacemacs的文档看了好几遍，也编写了自己的.spacemacs文件，能够做到基本的使用。
+- master emacs博客 https://www.masteringemacs.org/all-articles
+- abo-abo博客 https://oremacs.com/
+- 编写emacs插件教程 https://github.com/slegetank/WGEECN-
+- 懒猫 https://www.emacswiki.org/emacs/AndyStewart
+- 李杀的教程 http://ergoemacs.org/
 
-## 2 配置emacs
+博客都是emacs大牛写的，都很知名，其中懒猫是国人，我觉得他的emacs就太强悍了，写了很多的插件和博客，可以多看学习一下。折腾到这，可以尝试配置自己的emacs，spacemacs帮助用户做了很多事情，但很多修改用户不知道，总有种有时候有人背后捅刀的感觉，我就开始写自己的[emacs配置](https://github.com/lemon0910/lemon-emacs.d)了。主要参考了[centaur emacs](https://github.com/seagle0128/.emacs.d)，配置没那么多，可以学习修改。
+想要真正系统学习，推荐蓝猫的一篇[博客](https://www.jianshu.com/p/e952cd0ad48b)，附带一些学习资料：
 
-自己配置emacs参考了[seagle0128](https://github.com/seagle0128/.emacs.d) 和 [bbatsov](https://github.com/bbatsov/emacs.d) 。主要工作就是思考我在vim上有什么功能，在emacs如何配置实现，配置过程中掌握了很多插件的使用，并且对emacs和elisp有了新的，开始配的和vim很像，并且有更加强大的功能，如dired，magit，eshell等等，体会到了emacs的强大。现在在mac下就是使用emacs作为主力编辑器了。
-配置vim时也参考了很多文章，如陈斌的一年成为emacs高手，从vim迁移到emacs，ivy和helm，abo-abo的博客，收获了很多，从他们身上也吸取了很多emacs和elisp相关的知识。
-
-## 3 放弃emacs
-
-我说放弃，主要是说我在服务器上放弃了使用emacs，主要有两方面原因：1，我觉得emacs在终端的很多配色有问题，自己总是不喜欢；2，emacs会卡。是的，我觉得用久了emacs比vim卡，当然没有具体验证，但确实是我的真实感受。所以最后又换回了vim。折腾一段时间，发现vim才是真爱，但我也是希望emacs越来越强大，因为我也喜欢emacs。
+- emacs官方资料 https://www.gnu.org/software/emacs/manual/index.html
+- common lisp http://acl.readthedocs.io/en/latest/zhCN/index.html
