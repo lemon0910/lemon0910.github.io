@@ -1,0 +1,23 @@
+---
+layout:     post
+title:      网址列表
+date:       2018-05-12 01:29:00
+author:     "lemon"
+categories: 其它
+---
+
+记录一些自己喜欢的网址，各种各种：
+
+## IT博客
+
+- [XP的博客](http://drmingdrmer.github.io/)，美团前同事的博客。
+- leveldb和libevent[相关](http://blog.csdn.net/sparkliang/article/category/1342001)，主要是用于自学参考
+- [libevent相关](http://blog.csdn.net/luotuo44/article/category/2435521)
+- leveldb相关[资料](http://brg-liuwei.github.io/)
+
+## 学习资料
+
+- [负载均衡](http://liblb.com/learn.html)相关
+- [内核资料](http://blog.coly.li/wp-content/uploads/2014/03/)
+- [linux性能优化](https://zhuanlan.zhihu.com/kls-software-arch-world)
+- [raft学习资料](https://ramcloud.stanford.edu/~ongaro/userstudy/)
