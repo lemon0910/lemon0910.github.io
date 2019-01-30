@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      shell攻略
-date:       2015-04-08 18:40:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 在linux系统下面编程，慢慢发现了shell scripts的重要性。使用shell脚本编程，可以让很多问题自动化，无需自己去敲繁琐的命令，大大的解放了生产力。所以对于一个linux程序员来说，脚本编程非常重要。下面将介绍一些我的学习经验，也作为自己的笔记用来时常查看。

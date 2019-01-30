@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      TCP协议
-date:       2015-06-18 22:00:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 TCP是一个非常复杂的协议，网络编程中要用到很多TCP的知识，更好的理解TCP有利于分析程序运行，发现问题，掌握TCP协议是一个网络编程人员的必备技能。

@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      数据库简介
-date:       2015-01-10 20:35:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 简单介绍一下数据库的基本原理。

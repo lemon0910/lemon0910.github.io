@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      浅谈basic-paxos,multi-paxos和raft
-date:       2016-05-06 23:06:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 最近看了一些分布式一致性算法的相关文章，有basic-paxos相关的[文章](http://oceanbase.org.cn/?p=90)和multi-paxos相关的[文章](http://oceanbase.org.cn/?p=111)，结合自己前期学习的raft论文，总结一下它们的关系记录一下。

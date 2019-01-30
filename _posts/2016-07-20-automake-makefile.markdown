@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      使用automake生成Makefile
-date:       2016-07-20 10:12:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 一些Linux平台上开源的C或者C++项目，当你编译这些项目的时候，只需./configure、 make和make install就可以把程序编译完成并安装到系统中。这些开源的项目的编译和安装怎么如此的干净利落，主要通过automake相关工具实现的。

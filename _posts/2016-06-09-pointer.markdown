@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      利用二级指针删除单项链表
-date:       2016-06-09 16:22:00
-author:     "lemon"
-categories: 编程
+categories:
+  - 编程
 ---
 
 看coolshell上的文章一些总结。

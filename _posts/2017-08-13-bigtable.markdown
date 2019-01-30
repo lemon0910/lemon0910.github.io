@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      BigTable学习
-date:       2017-08-13 23:20:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 记录阅读BigTable论文时思考的一些问题。

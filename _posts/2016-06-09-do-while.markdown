@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      do {...} while(0)的用途
-date:       2016-06-09 16:07:00
-author:     "lemon"
-categories: 编程
+categories:
+  - 编程
 ---
 
 在c语言程序中，如linux内核和其它开源代码中，经常可以看到下面的代码：

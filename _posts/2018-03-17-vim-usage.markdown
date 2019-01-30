@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      vim心得
-date:       2018-03-17 21:20:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 vim是我使用了很久的编辑器，在不同的开发机上折腾了很多次，有了很多经验，这里记录一下我常用到的内容。

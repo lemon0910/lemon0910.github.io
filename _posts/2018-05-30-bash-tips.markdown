@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      编写快速安全bash脚本建议
-date:       2018-05-30 16:41:00
-author:     "lemon"
-categories: 工具
+categories:
+ - 工具
 ---
 
 看到网上非常好的一篇bash脚本编写建议，转载供自己学习使用。

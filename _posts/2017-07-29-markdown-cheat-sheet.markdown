@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      Markdown CheatSheet
-date:       2017-07-29 15:19:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 这边文章主要列举常用的markdown语法，使用这些语法足够满足平时90%的写作需求，需要详细需求请参考[详细指南](https://daringfireball.net/projects/markdown/syntax)。需要注意一点，markdown兼容html语法，可以直接在markdown中添加html语句。

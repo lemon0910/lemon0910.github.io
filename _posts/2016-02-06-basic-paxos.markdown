@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      快速理解Paxos算法
-date:       2016-02-06 16:18:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 Paxos算法是Lamport于1990年提出的一种基于消息传递的一致性算法，它是非常重要的分布式一致性算法。由于Chubby系统和Zookeeper都基于paxos算法实现，因此该算法名声大噪，被许多学习分布式系统的人学习。

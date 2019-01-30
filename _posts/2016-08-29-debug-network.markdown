@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      网络程序测试
-date:       2016-08-29 16:26:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 这里将记录一下我进行网络程序调试的一些经验。主要包括进程状态的查看，网络状况查看，日志查看，调试程序。

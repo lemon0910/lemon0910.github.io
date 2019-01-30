@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      mac软件
-date:       2018-04-20 22:45:00
-author:     "lemon"
-categories: 其它
+categories:
+  - 其它
 ---
 
 主要记录我安装mac软件的一些网址，软件名和配置。

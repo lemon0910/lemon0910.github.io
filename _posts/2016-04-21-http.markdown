@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      快速理解HTTP协议
-date:       2016-04-21 14:24:00
-author:     "lemon"
-categories: 编程
+categories:
+  - 编程
 ---
 
 HTTP是非常重要的网络协议，在实际工作中很多时候都需要学习和理解HTTP协议。比如为系统设计HTTP服务器，处理客户端的HTTP协议请求，模拟客户端发送HTTP请求等等。因此，这里将简单介绍一下HTTP的相关知识。

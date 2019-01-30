@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      分布式存储系统问题总结
-date:       2016-04-29 21:30:00
-author:     "lemon"
-categories: 系统
+categories:
+  - 系统
 ---
 
 这里主要记录自己最近思考的一些分布式系统相关的知识。

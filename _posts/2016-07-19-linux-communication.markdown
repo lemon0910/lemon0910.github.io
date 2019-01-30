@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      linux多机通信
-date:       2016-07-19 22:06:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 linux多机通信的一些方法记录。

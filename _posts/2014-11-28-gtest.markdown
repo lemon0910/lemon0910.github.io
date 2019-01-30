@@ -1,9 +1,7 @@
 ---
-layout:     post
-title:      gtest的使用
-date:       2014-11-28 14:10:00
-author:     "lemon"
-categories: 工具
+title: gtest的使用
+categories:
+  - 工具
 ---
 
 gtest是googletest的简称，它是一款google内部使用的测试驱动（当编写一个程序单元时，要先对这个程序单元编写其测试代码，然后再编写这个程序单元，这就是测试驱动）开发工具。gtest是一套单元测试框架，使用起来非常的方便，能很好地帮助编写测试代码。
@@ -112,6 +110,3 @@ int main(int argc, char **argv) {
 ```
 
 这样就会运行所有的测试用例了。
-
-
-

@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      protobuf的使用
-date:       2014-12-11 12:10:00
-author:     "lemon"
-categories: 编程
+categories:
+  - 编程
 ---
 
 Protocol Buffers 是一种轻便高效的结构化数据存储格式，可以用于结构化数据串行化，或者说序列化。它很适合做数据存储或 RPC 数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。目前提供了 C++、Java、Python 三种语言的 API。其优点是语言中立，平台中立，可扩展性好，目前在google内部大量用于数据存储，通讯协议等方面。Protocol Buffers在功能上类似XML，但是序列化后的数据更小，解析更快，使用上更简单。用户只要按照proto语法在.proto文件中定义好数据的结构，就可以使用PB提供的工具（protoc）自动生成处理数据的代码，使用这些代码就能在程序中方便的通过各种数据流读写数据。具体请参考[官网](https://github.com/google/protobuf)。

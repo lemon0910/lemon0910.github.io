@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      我使用过的chrome插件
-date:       2016-08-27 12:04:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 工欲善其事，必先利其器。我平时非常喜欢寻找有意思的插件。下面介绍几款我喜欢的chrome插件分享给大家。 

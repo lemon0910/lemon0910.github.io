@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      tcmalloc原理剖析
-date:       2015-05-18 19:30:00
-author:     "lemon"
-categories: 编程
+categories:
+  - 编程
 ---
 
 Tcmalloc是谷歌开发的一个内存分配器，管理堆内存，主要影响malloc和free，用于降低频繁分配、释放内存造成的性能损耗，并且有效地控制内存碎片。glibc中的内存分配器是ptmalloc2，tcmalloc号称要比它快。一次malloc和free操作，ptmalloc需要300ns，而tcmalloc只要50ns。同时tcmalloc也优化了小对象的存储，需要更少的空间。tcmalloc特别对多线程做了优化，对于小对象的分配基本上是不存在锁竞争，而大对象使用了细粒度、高效的自旋锁（spinlock）。分配给线程的本地缓存，在长时间空闲的情况下会被回收，供其他线程使用，这样提高了在多线程情况下的内存利用率，不会浪费内存，而这一点ptmalloc2是做不到的。

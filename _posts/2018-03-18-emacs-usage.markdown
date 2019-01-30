@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      emacs学习心得
-date:       2018-03-18 21:23:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 学习了emacs一段时间，走完了从入门到放弃这条路，这条路走得很折腾，记录一下自己的心得体会。首先展示一下我的成果[lemon-emacs](https://github.com/lemon0910/lemon-emacs.d)。

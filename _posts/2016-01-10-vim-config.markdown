@@ -1,9 +1,7 @@
 ---
-layout:     post
 title:      VIM配置
-date:       2016-01-10 21:19:00
-author:     "lemon"
-categories: 工具
+categories:
+  - 工具
 ---
 
 ## 简介
