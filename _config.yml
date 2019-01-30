@@ -12,18 +12,18 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "mint"
+minimal_mistakes_skin    : "sunrise"
 
 # Site Settings
 locale                   : "zh-CN"
 title                    : "lemon's blog"
 title_separator          : "-"
 name                     : "lemon"
-description              : "welcome."
+description              : "welcome here."
 url                      : "https://lemon0910.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : "assets/background.jpg"
+teaser                   : # "/assets/background.jpg"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
@@ -108,13 +108,10 @@ analytics:
 author:
   name             : "lemon"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an amazing person."
+  bio              : "love life."
   location         : "China"
   email            :
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: lemon_wonder@outlook.com
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/lemon0910"
@@ -266,7 +263,3 @@ defaults:
       comments: # true
       share: true
       related: true
-
-category_archive:
-  type: liquid
-  path: /categories/
