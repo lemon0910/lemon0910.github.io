@@ -64,7 +64,7 @@ static Tab tab[] =
  * @return length is the length of utf8_code
  * @return ERROR if error happened
  */
-int encodeToUTF8(char *utf8_code, const wchar_t unicode_code) {
+int encodeToUTF8(unsigned char *utf8_code, const wchar_t unicode_code) {
   long source_code;
   int tab_shift;
   int byte_cnt;
