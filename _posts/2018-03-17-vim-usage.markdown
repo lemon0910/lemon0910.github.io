@@ -36,7 +36,6 @@ cd src/
             --enable-gui=gtk2 \
             --enable-cscope \
             --enable-luainterp \
-            --with-luajit \
             --enable-fail-if-missing \
             --prefix='/home/zhixin.lm/usr' \
             --with-lua-prefix='lua安装目录'
